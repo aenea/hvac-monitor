@@ -6,6 +6,10 @@ import paho.mqtt.client as mqtt
 client = mqtt.Client('pi-hvac')
 client.connect('mqtt-01.aenea.org')
 
+def on_publish(client,userdata,result):             #create function for callback
+    print("data published \n")
+    pass
+
 # read the supply and return temperatures from the 1wire temperature probes
 tempSupply = float(open("/mnt/1wire/28.BC224A060000/temperature12", "r").read())
 tempReturn = float(open("/mnt/1wire/28.2A514A060000/temperature12", "r").read())
