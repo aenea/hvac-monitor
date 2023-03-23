@@ -4,7 +4,7 @@ COPY startup.sh /scripts/startup.sh
 COPY hvac-monitor.py /scripts/hvac-monitor.py
 
 RUN apt-get update && \
-    apt-get install owserver -y && \
+    apt-get install owserver owfs-fuse -y && \
     apt-get autoremove -y && \
     apt-get autoclean && \
     rm -rf /var/lib/apt/lists/* && \
