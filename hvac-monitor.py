@@ -9,10 +9,10 @@ RETURN_UNIQUE_ID = 'hvac_house_return_temperature'
 SUPPLY_UNIQUE_ID = 'hvac_house_supply_temperature'
 TOPIC_PREFIX = 'homeassistant/sensor/'
 
+
 # create a connection callback function
 def on_connect(client, userdata, flags, result, properties=None):
     if (result == 0):
-
         # create a config entry for the house hvac return temperature
         config = {}
         config['unique_id'] = RETURN_UNIQUE_ID
