@@ -65,4 +65,3 @@ while True:
         client.loop_stop()
         client.disconnect()
         break
-
