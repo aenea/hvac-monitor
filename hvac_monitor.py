@@ -2,7 +2,9 @@
 
 import paho.mqtt.client as mqtt
 import json
+import os
 import socket
+import ssl
 import time
 
 RETURN_UNIQUE_ID = 'hvac_house_return_temperature'
@@ -40,10 +42,20 @@ def on_connect(client, userdata, flags, result, properties=None):
         client.publish(TOPIC_PREFIX + SUPPLY_UNIQUE_ID + '/config', json.dumps(config), retain=True, properties=None)
 
 
+# script variabled
+loop_timer = os.getenv("LOOP_TIMER", default=30)
+mqtt_broker = os.getenv("MQTT_BROKER", default='mqtt')
+mqtt_port = os.getenv("MQTT_PORT", default=1883)
+mqtt_ssl = os.getenv("MQTT_SSL", default='no')
+
 # create a mqtt client
 client = mqtt.Client(client_id=socket.getfqdn(), transport='tcp', protocol=mqtt.MQTTv5)
 client.on_connect = on_connect
-client.connect('mqtt-01.aenea.org', 1883, properties=None)
+
+if mqtt_ssl.lower() == 'yes':
+    client.tls_set(certfile=None, keyfile=None, cert_reqs=ssl.CERT_REQUIRED)
+
+client.connect(mqtt_broker, int(mqtt_port), properties=None)
 client.loop_start()
 
 while True:
@@ -60,7 +72,7 @@ while True:
         client.publish(TOPIC_PREFIX + RETURN_UNIQUE_ID + '/state', tempReturn)
         client.publish(TOPIC_PREFIX + SUPPLY_UNIQUE_ID + '/state', tempSupply)
 
-        time.sleep(30)
+        time.sleep(int(loop_timer))
     except:
         client.loop_stop()
         client.disconnect()
