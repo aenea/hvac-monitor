@@ -1,4 +1,4 @@
-FROM python:3-slim-bullseye
+FROM python
 
 COPY startup.sh /scripts/startup.sh
 COPY hvac-monitor.py /scripts/hvac-monitor.py
